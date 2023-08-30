@@ -1,13 +1,13 @@
-package main;
+package appMain;
 
 import java.util.Scanner;
 
-public class Relogio {
+public class main {
     private int horas;
     private int minutos;
     private int segundos;
 
-    public Relogio() {
+    public main() {
         // Inicializa o relógio com 00:00:00
         this.horas = 0;
         this.minutos = 0;
@@ -60,7 +60,7 @@ public class Relogio {
     }
 
     public static void main(String[] args) {
-        Relogio relogio = new Relogio();
+        main relogio = new main();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
