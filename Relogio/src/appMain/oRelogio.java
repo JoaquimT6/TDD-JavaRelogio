@@ -2,19 +2,35 @@ package appMain;
 
 import java.util.Scanner;
 
-public class main {
+public class oRelogio {
     private int horas;
     private int minutos;
     private int segundos;
+    private String ultimaMensagem;
 
-    public main() {
-        // Inicializa o relógio com 00:00:00
-        this.horas = 0;
-        this.minutos = 0;
-        this.segundos = 0;
+    public oRelogio() {
+        horas = 0;
+        minutos = 0;
+        segundos = 0;
     }
 
-    public void alterarHorario(int horas, int minutos, int segundos) {
+    public int getHoras() {
+        return horas;
+    }
+
+    public int getMinutos() {
+        return minutos;
+    }
+
+    public int getSegundos() {
+        return segundos;
+    }
+
+    public String getUltimaMensagem() {
+        return ultimaMensagem;
+    }
+
+    public void definirHorario(int horas, int minutos, int segundos) {
         if (horas >= 0 && horas < 24 && minutos >= 0 && minutos < 60 && segundos >= 0 && segundos < 60) {
             this.horas = horas;
             this.minutos = minutos;
@@ -26,9 +42,9 @@ public class main {
     }
 
     public void reiniciarMeiaNoite() {
-        this.horas = 0;
-        this.minutos = 0;
-        this.segundos = 0;
+        horas = 0;
+        minutos = 0;
+        segundos = 0;
         System.out.println("Relógio reiniciado para meia-noite.");
     }
 
@@ -44,27 +60,31 @@ public class main {
             int segundosDecorridos = (int) (tempoDecorrido % 60);
 
             System.out.printf("Tempo decorrido: %02d:%02d:%02d%n", horasDecorridas, minutosDecorridos, segundosDecorridos);
+            ultimaMensagem = "Tempo decorrido: " + horasDecorridas + ":" + minutosDecorridos + ":" + segundosDecorridos;
         } else {
             System.out.println("Intervalo de tempo inválido.");
+            ultimaMensagem = "Intervalo de tempo inválido.";
         }
     }
 
-    public void imprimirFormatoHorario(boolean formato24h) {
+    public String imprimirFormatoHorario(boolean formato24h) {
         if (formato24h) {
             System.out.printf("%02d:%02d:%02d%n", horas, minutos, segundos);
+            return String.format("%02d:%02d:%02d", horas, minutos, segundos);
         } else {
             String periodo = (horas < 12) ? "AM" : "PM";
             int horaFormato12h = (horas == 0 || horas == 12) ? 12 : horas % 12;
             System.out.printf("%d:%02d:%02d %s%n", horaFormato12h, minutos, segundos, periodo);
+            return String.format("%d:%02d:%02d %s", horaFormato12h, minutos, segundos, periodo);
         }
     }
 
     public static void main(String[] args) {
-        main relogio = new main();
+        oRelogio relogio = new oRelogio();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("1 - Alterar Horário");
+            System.out.println("1 - Definir Horário");
             System.out.println("2 - Reiniciar para Meia-Noite");
             System.out.println("3 - Marcar Intervalo de Tempo");
             System.out.println("4 - Imprimir Horário");
@@ -73,17 +93,19 @@ public class main {
             int escolha = scanner.nextInt();
 
             switch (escolha) {
-                case 1 -> {
+                case 1:
                     System.out.println("Digite a nova hora (0-23):");
                     int novaHora = scanner.nextInt();
                     System.out.println("Digite os novos minutos (0-59):");
                     int novosMinutos = scanner.nextInt();
                     System.out.println("Digite os novos segundos (0-59):");
                     int novosSegundos = scanner.nextInt();
-                    relogio.alterarHorario(novaHora, novosMinutos, novosSegundos);
-                }
-                case 2 -> relogio.reiniciarMeiaNoite();
-                case 3 -> {
+                    relogio.definirHorario(novaHora, novosMinutos, novosSegundos);
+                    break;
+                case 2:
+                    relogio.reiniciarMeiaNoite();
+                    break;
+                case 3:
                     System.out.println("Digite a hora de início (0-23):");
                     int horaInicio = scanner.nextInt();
                     System.out.println("Digite os minutos de início (0-59):");
@@ -97,23 +119,21 @@ public class main {
                     System.out.println("Digite os segundos de término (0-59):");
                     int segundoFim = scanner.nextInt();
                     relogio.marcarIntervalo(horaInicio, minutoInicio, segundoInicio, horaFim, minutoFim, segundoFim);
-                }
-                case 4 -> {
+                    break;
+                case 4:
                     System.out.println("Escolha o formato de horário:");
                     System.out.println("1 - 24 Horas");
                     System.out.println("2 - AM/PM");
                     int formatoEscolhido = scanner.nextInt();
                     boolean formato24h = (formatoEscolhido == 1);
                     relogio.imprimirFormatoHorario(formato24h);
-                }
-                case 5 -> {
+                    break;
+                case 5:
                     scanner.close();
                     System.exit(0);
-                }
-                default -> System.out.println("Opção inválida.");
+                default:
+                    System.out.println("Opção inválida.");
             }
         }
     }
-
-
 }
